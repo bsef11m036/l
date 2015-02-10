@@ -1,0 +1,151 @@
+﻿@model FYP.Models.Search
+@{
+
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-ui-1.8.24.js"></script>
+<script src="../Scripts/bootstrap.js"></script>
+<link href="../Content/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/searchBar.css" rel="stylesheet" />
+<!--/.navbar -->
+<link href="~/Content/autocomplete.css" rel="stylesheet" />
+<script type="text/javascript">
+    function search() {
+        var t = $("#searchBar").val();
+        if (t != "") {
+            $("#SearchBar").animate({ "margin-top": "5px" }, function () {
+                $("#tabs").show();
+                $("#FilterUsers").show();
+                //$("#SearchBar").css("margin-top", "5px");
+                $("#this1").text("");
+                $("#this1").load("/Account/SearchResult", { query: t });
+                $("#google1").text("");
+                $("#google1").load("/Account/SearchPost", { query: t });
+
+            });
+        }
+
+    }
+    $('.ui-autocomplete').css('list-style-type', 'none');
+    $('.ui-autocomplete').css('text-decoration', 'none');
+    $('.ui-autocomplete').css('width', '600px');
+    $(document).ready(function () {
+        $("#tabs").hide();
+        $("#FilterUsers").hide();
+        $("#searchBar").autocomplete({
+            source: '/Account/SearchAutoComp',
+        });
+        $("#searchBar").keypress(function (event) {
+            if (event.which == 13) {
+                $("#btn").focus();
+                search();
+            }
+        });
+
+    });
+    function FilterUsers() {
+        var status = document.getElementById("FilterUsers");
+        var str = status.value;
+        switch (str) {
+            case "Online Users":
+                ShowOnlineUsers();
+                break;
+            case "Offline Users":
+                ShowOfflineUsers();
+                break;
+            case "All Users":
+                ShowAllUsers();
+                break;
+        }
+    }
+    function ShowOnlineUsers() {
+        arr1 = document.getElementsByClassName('result');
+        arr2 = document.getElementsByClassName('status');
+        var i = 0, j = 0;
+        for (i = 0; i < arr1.length; i++) {
+            var t = arr2[i].innerHTML;
+            if (t == "Chat") {
+                arr1[i].className = "result search-result row";
+            }
+            else {
+                arr1[i].className = "result search-result row hidden";
+            }
+        }
+    }
+    function ShowAllUsers() {
+        arr1 = document.getElementsByClassName('result');
+        arr2 = document.getElementsByClassName('status');
+        var i = 0, j = 0;
+        for (i = 0; i < arr1.length; i++) {
+            arr1[i].className = "result search-result row";
+        }
+    }
+    function ShowOfflineUsers() {
+        arr1 = document.getElementsByClassName('result');
+        arr2 = document.getElementsByClassName('status');
+        var i = 0, j = 0;
+        for (i = 0; i < arr1.length; i++) {
+            var t = arr2[i].innerHTML;
+            if (t == "Chat") {
+                arr1[i].className = "result search-result row hidden";
+            }
+            else {
+                arr1[i].className = "result search-result row";
+            }
+        }
+    }
+
+</script>
+
+
+<div id="SearchBar" class="col-md-8 col-md-push-1" style="margin-top:200px">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div id="imaginary_container">
+                    <div class="input-group stylish-input-group">
+                        <input type="text" id="searchBar" class="form-control" placeholder="Search" style="font-size:x-large">
+                        <span class="input-group-addon">
+                            <button onclick="search()" id="btn">
+                                <span class="glyphicon glyphicon-search "></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<select id="FilterUsers" class="selectpicker pull-right" data-style="btn-primary" onchange="FilterUsers()">
+    <option>All Users</option>
+    <option>Online Users</option>
+    <option>Offline Users</option>
+</select>
+
+<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+    <li class="active"><a data-toggle="tab" href="#this1">My Search</a></li>
+    <li><a data-toggle="tab" href="#google1">Related Questions</a></li>
+</ul>
+
+<br />
+<div class="tab-content">
+
+    <div class="tab-pane active" id="this1">
+
+    </div>
+    <div class="tab-pane" id="google1">
+    </div>
+</div>

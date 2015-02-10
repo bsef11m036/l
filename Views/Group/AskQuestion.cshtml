@@ -1,0 +1,263 @@
+﻿@{
+    ViewBag.Title = "Ask Question";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/jquery-ui-1.8.24.js"></script>
+<script type="text/javascript" src="~/Scripts/jquery.js"></script>
+<script type='text/javascript' src='~/Scripts/thickbox-compressed.js'></script>
+<script type='text/javascript' src='~/Scripts/jquery.autocomplete.js'></script>
+<script type='text/javascript' src='~/Scripts/localdata.js'></script>
+<script src="~/Scripts/jquery.ajaxQueue.js"></script>
+<script src="~/Scripts/jquery.autocomplete.pack.js"></script>
+<script src="~/Scripts/respond.js"></script>
+<link rel="stylesheet" type="text/css" href="~/Content/jquery.autocomplete.css" />
+<script src="~/Scripts/current.js"></script>
+
+<div class="container">
+    <div class="row">
+
+        <input type="hidden" id="hidden1" value="0" />
+        <!-- Group Entries Column -->
+        <div class="col-md-8">
+
+            <h1 class="col-md-offset-4" style="font-weight:bold">
+                Ask Question
+            </h1>
+            <hr />
+            @if (User.Identity.IsAuthenticated)
+            {
+
+                <ul class="nav nav-tabs" data-tabs="tabs">
+                    <li class="active"><a data-toggle="tab" href="#simple">Message</a></li>
+                    <li><a data-toggle="tab" href="#image">Image</a></li>
+                    <li><a data-toggle="tab" href="#video">Video</a></li>
+                    <li><a data-toggle="tab" href="#document">Document</a></li>
+
+                </ul>
+
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="simple">
+
+                        <div class="well well-sm">
+                            <form class="form-horizontal" name="f1" action="../User/createPost" method="post">
+                                <fieldset>
+
+                                    <br />
+                                    <!-- Name input-->
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="name">Title</label>
+                                        <div class="col-md-9">
+                                            <input id="title" name="title" type="text" placeholder="Post Title" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Message body -->
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="message">Your Question</label>
+                                        <div class="col-md-9">
+                                            <textarea style="resize:none" class="form-control" id="text" name="text" placeholder="Please enter your text here..." rows="5" required></textarea>
+                                            <input type="hidden" id="path" name="path" value="null" />
+                                            <input type="hidden" id="type" name="type" value="null" />
+                                        </div>
+                                    </div>
+
+                                    <!-- Tags -->
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="name">Add Tags</label>
+                                        <div class="col-md-9">
+                                            <input id="TName" name="TName" type="text" class="form-control" required>
+                                            @*<small class="col-lg-offset-0" style="color:chocolate">At max 5 tags</small>*@
+                                        </div>
+                                    </div>
+                                    
+
+
+                                    <!-- Form actions -->
+                                    <div class="form-group">
+                                        <div class="col-md-12 text-right">
+                                            <button type="submit" class="btn btn-primary btn">POST</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="image">
+
+
+                        <div class="well well-sm">
+                            <form class="form-horizontal" name="f1" action="../User/createPost" method="post" enctype="multipart/form-data">
+                                <fieldset>
+
+                                    <br />
+                                    <!-- Name input-->
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="name">Title</label>
+                                        <div class="col-md-9">
+                                            <input id="title" name="title" type="text" placeholder="Post Title" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Message body -->
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="message">Your Question</label>
+                                        <div class="col-md-9">
+                                            <textarea style="resize:none" class="form-control" id="text" name="text" placeholder="Please enter your text here..." rows="5" required></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="message">Upload Image</label>
+                                        <div class="col-md-9">
+                                            <input type="file" class="form-control" id="path" name="path" required />
+                                            <input type="hidden" id="type" name="type" value="image" />
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Tags -->
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="name">Add Tags</label>
+                                        <div class="col-md-9">
+                                            <input id="TName1" name="TName" type="text" class="form-control" required>
+                                            <small class="col-lg-offset-0" style="color:chocolate">At max 5 tags</small>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Form actions -->
+                                    <div class="form-group">
+                                        <div class="col-md-12 text-right">
+                                            <button type="submit" class="btn btn-primary btn">POST</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+                    <div class="tab-pane" id="video">
+
+
+                        <div class="well well-sm">
+                            <form class="form-horizontal" name="f1" action="../User/createPost" method="post" enctype="multipart/form-data">
+                                <fieldset>
+
+                                    <br />
+                                    <!-- Name input-->
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="name">Title</label>
+                                        <div class="col-md-9">
+                                            <input id="title" name="title" type="text" placeholder="Post Title" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Message body -->
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="message">Your Question</label>
+                                        <div class="col-md-9">
+                                            <textarea style="resize:none" class="form-control" id="text" name="text" placeholder="Please enter your text here..." rows="5" required></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="message">Upload Video</label>
+                                        <div class="col-md-9">
+                                            <input type="file" class="form-control" id="path" name="path" required />
+                                            <input type="hidden" id="type" name="type" value="video" />
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Tags -->
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="name">Add Tags</label>
+                                        <div class="col-md-9">
+                                            <input id="TName2" name="TName" type="text" class="form-control" required>
+                                            <small class="col-lg-offset-0" style="color:chocolate">At max 5 tags</small>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Form actions -->
+                                    <div class="form-group">
+                                        <div class="col-md-12 text-right">
+                                            <button type="submit" class="btn btn-primary btn">POST</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane" id="document">
+
+
+                        <div class="well well-sm">
+                            <form class="form-horizontal" name="f1" action="../User/createPost" method="post" enctype="multipart/form-data">
+                                <fieldset>
+
+                                    <br />
+                                    <!-- Name input-->
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="name">Title</label>
+                                        <div class="col-md-9">
+                                            <input id="title" name="title" type="text" placeholder="Post Title" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Message body -->
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="message">Your Question</label>
+                                        <div class="col-md-9">
+                                            <textarea style="resize:none" class="form-control" id="text" name="text" placeholder="Please enter your text here..." rows="5" required></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="message">Upload Document</label>
+                                        <div class="col-md-9">
+                                            <input type="file" class="form-control" id="path" name="path" required />
+                                            <input type="hidden" id="type" name="type" value="document" />
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Tags -->
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="name">Add Tags</label>
+                                        <div class="col-md-9">
+                                            <input id="TName3" name="TName" type="text" class="form-control" required>
+                                            <small class="col-lg-offset-0" style="color:chocolate">At max 5 tags</small>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Form actions -->
+                                    <div class="form-group">
+                                        <div class="col-md-12 text-right">
+                                            <button type="submit" class="btn btn-primary btn">POST</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <hr>
+</div>

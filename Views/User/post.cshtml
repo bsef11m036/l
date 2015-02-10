@@ -1,0 +1,592 @@
+﻿@model FYP.Models.post
+
+@{
+    ViewBag.Title = "post";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-8">
+
+            <h1 id="t" style="text-decoration-line:underline">
+
+                <!--get title from DB-->
+                @Model.title.ToString()
+            </h1>
+            <p class="lead">
+                by <a href="#" id="u">@Model.owner.ToString()</a>
+
+                <br />
+                @{
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        var v1 = User.Identity.Name;
+                        if (v1 == Model.owner.ToString() || v1 == ViewBag.owner)
+                        {
+                            <a href="#" id="delete">Delete Post</a>
+                        }
+                    }
+                }
+            </p>
+            <hr />
+            <p>
+                <div id="dat">
+                    <span class="glyphicon glyphicon-time"></span> Posted on @Model.time.ToString()
+                </div>
+            </p>
+
+            <hr>
+            <div id="d">
+                @Model.text.ToString()
+            </div>
+
+            <br /><br />
+            @{
+                if (Model.type == "image")
+                {
+                    <a href="@Model.path.ToString()" target="_blank"><img src="@Model.path.ToString()" id="img" width="200" height="200" /></a>
+                }
+
+                if (Model.type == "video")
+                {
+                    <video width="315" height="240" controls>
+                        <source src="@Model.path.ToString()" type="video/mp4">
+                        <source src="@Model.path.ToString()" type="video/3gpp">
+                        <source src="@Model.path.ToString()" type="video/m4v">
+                        <source src="@Model.path.ToString()" type="video/webm">
+                        Your browser does not support the video tag.
+                    </video>
+                }
+
+                if (Model.type == "document")
+                {
+                    <br />
+                    <a data-original-title="Document" data-toggle="tooltip" href="@Model.path.ToString()" type="button" class="btn btn-sm btn-primary" target="_blank">Click to Open <i class="glyphicon glyphicon-download"></i></a>
+                }
+            }
+            <br />
+
+
+
+
+            <button class="btn-link" id="like" name="like"><i class="glyphicon glyphicon-thumbs-up"></i> </button><span id="likes">@Model.like</span>
+            <button class="btn-link" id="dislike" name="dislike"><i class="glyphicon glyphicon-thumbs-down"></i> </button><span id="dislikes">@Model.dislike</span>
+            <br /><br /><br />
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="well well-sm">
+                            <fieldset>
+                                
+                                @{
+                                    @*<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>*@
+                                    <h4>@ViewBag.scp.Count Comments</h4>
+                                    //int c=0;
+                                    for (int a = 0; a < ViewBag.scp.Count; a++)
+                                    {
+                                        @*for (c = 0; c < ViewBag.us.Count; c++)
+                                        {
+                                            if (ViewBag.us[c].UserName.Equals(ViewBag.c[i].username))
+                                            {
+                                                <br />
+                                                <img id="cmnt" class="img-circle" src="@ViewBag.us[c].path" width="50" height="50" />
+                                                break;
+                                            }
+                                        }*@
+                                        <button class="btn-link" id="user1">@ViewBag.scp[a].username: </button>
+                                        <span id="s">@ViewBag.scp[a].comment1</span>
+                                    <br />
+                                    }
+
+
+                                    if (User.Identity.IsAuthenticated)
+                                    {
+                                    <input type="hidden" id="hide1" name="hide1" value="0" />
+                                    
+
+                                    <div id="smallcomment1">
+                                        <img id="smlcmnt" class="img-circle" src="@ViewBag.crnt.path.ToString()" width="50" height="50" />
+                                        <button class="btn-link" id="username">@User.Identity.Name</button>
+                                        <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <input type="text" id="smallcomment" name="smallcomment" placeholder="Enter Comment Here ..." size="56" />
+                                    </div>
+                                    }
+                                }
+
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <hr>
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="well well-sm">
+                            <fieldset>
+
+                                <div id="abc">
+                                    @{
+                                        <h4>@ViewBag.c.Count Answers</h4>
+                                        int c = 0;
+                                        for (int i = 0; i < ViewBag.c.Count; i++)
+                                        {
+                                            for (c = 0; c < ViewBag.us.Count; c++)
+                                            {
+                                                if (ViewBag.us[c].UserName.Equals(ViewBag.c[i].username))
+                                                {
+                                                    @*if (User.Identity.IsAuthenticated)
+                                                    {
+                                                        var v2 = User.Identity.Name;
+                                                        if (v2 == Model.owner.ToString() || v2 == ViewBag.owner || v2 == ViewBag.c[i].username)
+                                                        {
+                                                            <br />
+                                                            <span class="col-sm-offset-11"> </span><a id="@ViewBag.c[i].cId" data-original-title="Broadcast Message" data-toggle="tooltip" href="#" type="button" class="btn btn-sm"><i class="glyphicon glyphicon-remove"></i></a>
+                                                        }
+                                                    }*@
+                                                    <br />
+                                                    <img id="cmnt" class="img-circle" src="@ViewBag.us[c].path" width="50" height="50" />
+                                                    break;
+                                                }
+                                            }
+
+                                            <button class="btn-link" id="user2">@ViewBag.c[i].username</button>
+
+
+                                            if (ViewBag.c[i].type == "expert")
+                                            {
+
+                                                <span id="s">This is Expert Comment&nbsp;&nbsp;</span>
+
+                                                if (ViewBag.c[i].username == User.Identity.Name && ViewBag.us[c].type == "expert")
+                                                {
+                                                    <button id="o-@ViewBag.c[i].cId" data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary">Open It <i class="glyphicon glyphicon-eye-open"></i></button>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span id="s">@ViewBag.c[i].comment1</span>
+                                                if (ViewBag.c[i].username == User.Identity.Name && ViewBag.us[c].type == "expert")
+                                                {
+                                                    <button id="h-@ViewBag.c[i].cId" data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary">Hide It <i class="glyphicon glyphicon-eye-open"></i></button>
+                                                }
+                                            }
+                                            
+                                            
+
+                                            <br>
+                                            if (User.Identity.IsAuthenticated)
+                                            {
+                                                var abc = 0;
+                                                for (int v = 0; v < ViewBag.li.Count; v++)
+                                                {
+                                                    if (ViewBag.c[i].cId == ViewBag.li[v].cId)
+                                                    {
+                                                        if (ViewBag.li[v].status == 1)
+                                                        {
+                                                            abc = 1;
+                                                            <button style="text-decoration:line-through" class="btn-link" id="l-@ViewBag.c[i].cId" name="clike"><i class="glyphicon glyphicon-thumbs-up"></i> </button>
+                                                            <span id="a-@ViewBag.c[i].cId">@ViewBag.c[i].like</span>
+                                                            <button class="btn-link" disabled id="d-@ViewBag.c[i].cId" name="cdislike"><i class="glyphicon glyphicon-thumbs-down"></i>  </button>
+                                                            <span id="b-@ViewBag.c[i].cId">@ViewBag.c[i].unlike</span>
+                                                            break;
+                                                        }
+                                                        else if (ViewBag.li[v].status == 0)
+                                                        {
+                                                            abc = 1;
+                                                            <button disabled class="btn-link" id="l-@ViewBag.c[i].cId" name="clike"><i class="glyphicon glyphicon-thumbs-up"></i>  </button>
+                                                            <span id="a-@ViewBag.c[i].cId">@ViewBag.c[i].like</span>
+                                                            <button style="text-decoration:line-through" class="btn-link" id="d-@ViewBag.c[i].cId" name="cdislike"><i class="glyphicon glyphicon-thumbs-down"></i>  </button>
+                                                            <span id="b-@ViewBag.c[i].cId">@ViewBag.c[i].unlike</span>
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                if (abc == 0)
+                                                {
+                                                    <button class="btn-link" id="l-@ViewBag.c[i].cId" name="clike"><i class="glyphicon glyphicon-thumbs-up"></i>  </button><span id="a-@ViewBag.c[i].cId">@ViewBag.c[i].like</span>
+                                                    <button class="btn-link" id="d-@ViewBag.c[i].cId" name="cdislike"><i class="glyphicon glyphicon-thumbs-down"></i>  </button><span id="b-@ViewBag.c[i].cId">@ViewBag.c[i].unlike</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <button class="btn-link" id="l-@ViewBag.c[i].cId" name="clike"><i class="glyphicon glyphicon-thumbs-up"></i></button><span id="a-@ViewBag.c[i].cId">@ViewBag.c[i].like</span>
+                                                <button class="btn-link" id="d-@ViewBag.c[i].cId" name="cdislike"><i class="glyphicon glyphicon-thumbs-down"></i>  </button><span id="b-@ViewBag.c[i].cId">@ViewBag.c[i].unlike</span>
+                                            }
+                                            <br /><br />
+
+
+                                            for (int a = 0; a < ViewBag.scc.Count; a++)
+                                            {
+
+                                                if (ViewBag.c[i].cId == ViewBag.scc[a].cId)
+                                                {
+                                                    <table>
+                                                        <tr>
+                                                            <td><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+                                                            <td><button class="btn-link" id="user3">@ViewBag.scc[a].username: </button></td>
+                                                            <td style="word-wrap:break-word;max-width:450px;">
+                                                                <span id="s">@ViewBag.scc[a].comment1</span>
+                                                            </td>
+                                                            @*<br />*@
+                                                        </tr>
+                                                    </table>
+                                                }
+                                            }
+                                            <hr />
+                                            if (User.Identity.IsAuthenticated)
+                                            {
+                                                <input type="hidden" id="hide-@ViewBag.c[i].cId" name="hide-@ViewBag.c[i].cId" value="@ViewBag.c[i].cId" />
+
+                                                <div id="smallcomment2">
+                                                    <img id="smlcmnt2" class="img-circle" src="@ViewBag.crnt.path.ToString()" width="50" height="50" />
+                                                    <button class="btn-link" id="user4">@User.Identity.Name</button>
+                                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                    <input type="text" id="t-@ViewBag.c[i].cId" name="t-@ViewBag.c[i].cId" placeholder="Enter Comment Here ..." size="56" />
+                                                </div>
+                                            }
+                                            <hr /><br />
+                                        }
+                                        
+                                    }
+                                
+                                </div>
+                                
+                                @{    
+                                    if (User.Identity.IsAuthenticated)
+                                    {
+                                        <div id="comment1">
+                                            <img id="cmnt" class="img-circle" src="@ViewBag.crnt.path.ToString()" width="50" height="50" />
+                                            <button class="btn-link" id="user5">@User.Identity.Name</button>
+                                            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                            <textarea style="resize:none" id="comment" name="comment" placeholder="Enter Answer Here ..." rows="5" cols="56"></textarea>
+                                        </div>
+                                    }
+                                }
+
+                                
+
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#like').click(function () {
+
+        var a = "@Model.postId";
+        var c = "@Model.like";
+        if ($('#dislike').is(":disabled")) {
+            $.getJSON("../User/likes?pid=" + a + "&op=ne", function (data) {
+
+                if (data == -5) {
+                    window.location = "../Account/Login";
+                }
+                else if (data != -1) {
+                    $('#like').css("text-decoration", "none");
+                    $('#dislike').attr("disabled", false);
+                    $('#likes').text(data);
+
+                }
+                else {
+
+                }
+            });
+        }
+        else {
+            $.getJSON("../User/likes?pid=" + a + "&op=pe", function (data) {
+                if (data == -5) {
+
+                    window.location = "../Account/Login";
+                }
+                else if (data != -1) {
+                    $('#likes').text(data);
+                    $('#dislike').attr("disabled", true);
+                    $('#like').css("text-decoration", "line-through");
+                }
+                else {
+
+                }
+            });
+        }
+
+    });
+
+    $('#dislike').click(function () {
+        var a = "@Model.postId";
+        var c = "@Model.dislike";
+        if ($('#like').is(":disabled")) {
+            $.getJSON("../User/unlikes?pid=" + a + "&op=ne", function (data) {
+                if (data == -5) {
+                    window.location = "../Account/Login";
+                }
+                else if (data != -1) {
+                    $('#dislike').css("text-decoration", "none");
+                    $('#like').attr("disabled", false);
+                    $('#dislikes').text(data);
+
+                }
+                else { }
+            });
+        }
+        else {
+            $.getJSON("../User/unlikes?pid=" + a + "&op=pe", function (data) {
+                if (data == -5) {
+                    window.location = "../Account/Login";
+                }
+                else if (data != -1) {
+                    $('#dislikes').text(data);
+                    $('#like').attr("disabled", true);
+                    $('#dislike').css("text-decoration", "line-through");
+
+                }
+            });
+        }
+
+    });
+
+
+    $(document).ready(function () {
+
+        var a = "@Model.postId";
+
+        $.getJSON("../User/userLike?id=" + a + "&status=post", function (data) {
+
+            if (data == 1) {
+                $('#dislike').attr("disabled", true);
+                $('#like').css("text-decoration", "line-through");
+            }
+            else if (data == 0) {
+                $('#like').attr("disabled", true);
+                $('#dislike').css("text-decoration", "line-through");
+            }
+            else {
+
+            }
+        });
+        //$.getJSON("../User/userCommentLike?id=" + a + "&status=post", function (data) {
+
+        //    if (data == 1) {
+        //        $('#dislike').attr("disabled", true);
+        //        $('#like').css("text-decoration", "line-through");
+        //    }
+        //    else if (data == 0) {
+        //        $('#like').attr("disabled", true);
+        //        $('#dislike').css("text-decoration", "line-through");
+        //    }
+        //    else {
+
+        //    }
+        //});
+        
+        $('#comment1').on('keypress', 'textarea', function (event) {
+            
+            var key = event.keyCode;
+            if (key == 13) {
+                var s = "@Model.postId";
+                var s1 = $('#comment').val();
+                $.getJSON("../User/comment?pid=" + s + "&cmnt=" + s1, function (data) {
+                    if (data == true) {
+                        window.location = "../User/post?pid=" + s;
+                    }
+                });
+            }
+        });
+
+
+        $('#smallcomment1').on('keypress', 'input[type=text]', function (event) {
+            
+            var key = event.keyCode;
+            if (key == 13) {
+                var s = "@Model.postId";
+                var s1 = $('#smallcomment').val();
+                var s2 = $('#hide1').val();
+                $.getJSON("../User/smallcomment?pid=" + s + "&cmnt=" + s1 + "&cmtID=" + s2, function (data) {
+                    if (data == true) {
+                        window.location = "../User/post?pid=" + s;
+                    }
+                });
+            }
+        });
+
+
+    });
+
+
+    @*$('#abc').on('click', 'a', function (event) {
+        var s = "@Model.postId";
+        //var s1 = event.target.id;
+        var s1 = $(this).attr('id');
+        $.getJSON("../User/deleteComment?pid=" + s + "&cId=" + s1, function (data) {
+            if (data == true) {
+                location.reload(true);
+            }
+        });
+    });*@
+
+
+    $('#abc').on('keypress', 'input[type=text]', function (event) {
+        var s1 = $(this).attr('id');
+        if (s1[0] == 't') {
+            var v = s1.substring(2, s1.length);
+            var smlcmt = "#" + s1;
+            
+            var key = event.keyCode;
+            if (key == 13) {
+                var s = "@Model.postId";
+                var s1 = $(smlcmt).val();
+                var s2 = $('#hide-' + v).val();
+
+                $.getJSON("../User/smallcomment?pid=" + s + "&cmnt=" + s1 + "&cmtID=" + s2, function (data) {
+                    if (data == true) {
+                        window.location = "../User/post?pid=" + s;
+                    }
+                });
+            }
+            
+        }
+    });
+
+
+    $('#abc').on('click', 'button', function (event) {
+        //var s1 = event.target.id;
+        var s1 = $(this).attr('id');
+
+        if (s1 != "UserName") {
+            var v = s1.substring(2, s1.length);
+
+
+            if (s1[0] == 'o') {
+                var san = "#o-" + v;
+
+                $.getJSON("../User/commentOpen?cid=" + v + "&op=pe", function (data) {
+
+                    if (data == false) {
+                        //window.location = "../Account/Login";
+                    }
+                    else {
+                        window.location.reload();
+
+                    }
+                });
+            }
+            else if (s1[0] == 'h') {
+                var san = "#h-" + v;
+
+                $.getJSON("../User/commentOpen?cid=" + v + "&op=ne", function (data) {
+
+                    if (data == false) {
+                        //window.location = "../Account/Login";
+                    }
+                    else {
+                        window.location.reload();
+
+                    }
+                });
+            }
+            else if (s1[0] == 'l') {
+                var san = "#d-" + v;
+                if ($(san).is(":disabled")) {
+                    $.getJSON("../User/commentLikes?cid=" + v + "&op=ne", function (data) {
+
+                        if (data == -5) {
+                            window.location = "../Account/Login";
+                        }
+                        else if (data != -1) {
+                            $('#l-' + v).css("text-decoration", "none");
+                            $('#d-' + v).attr("disabled", false);
+                            $('#a-' + v).text(data);
+
+                        }
+                        else {
+
+                        }
+                    });
+                }
+                else {
+
+                    $.getJSON("../User/commentLikes?cid=" + v + "&op=pe", function (data) {
+                        if (data == -5) {
+
+                            window.location = "../Account/Login";
+                        }
+                        else if (data != -1) {
+                            $('#a-' + v).text(data);
+                            $('#d-' + v).attr("disabled", true);
+                            $('#l-' + v).css("text-decoration", "line-through");
+                        }
+                        else {
+
+                        }
+                    });
+                }
+            }
+            else if (s1[0] == 'd') {
+                if ($('#l-' + v).is(":disabled")) {
+
+                    $.getJSON("../User/commentUnlikes?cid=" + v + "&op=ne", function (data) {
+
+                        if (data == -5) {
+                            window.location = "../Account/Login";
+                        }
+                        else if (data != -1) {
+                            $('#d-' + v).css("text-decoration", "none");
+                            $('#l-' + v).attr("disabled", false);
+                            $('#b-' + v).text(data);
+
+                        }
+                        else {
+
+                        }
+                    });
+                }
+                else {
+                    $.getJSON("../User/commentUnlikes?cid=" + v + "&op=pe", function (data) {
+                        if (data == -5) {
+
+                            window.location = "../Account/Login";
+                        }
+                        else if (data != -1) {
+                            $('#b-' + v).text(data);
+                            $('#l-' + v).attr("disabled", true);
+                            $('#d-' + v).css("text-decoration", "line-through");
+                        }
+                        else {
+
+                        }
+                    });
+                }
+
+            }
+        }
+    });
+
+    $('#delete').click(function () {
+        var v = "@Model.postId";
+
+
+        $.getJSON("../User/deletePost?pid=" + v, function (data) {
+            if (data == true) {
+                window.location = "../Home/Index";
+            }
+            else {
+
+            }
+
+        });
+    });
+
+
+
+
+</script>
